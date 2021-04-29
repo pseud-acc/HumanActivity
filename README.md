@@ -28,7 +28,8 @@ mean and standard deviation measurements recorded, labeled by activity
 
 ### [avg_mean_std_data]
 Description: Consists of the merged train and test data for
-mean and standard deviation measurements recorded, averaged by activity. 
+mean and standard deviation measurements recorded, averaged by activity and 
+subject. 
 Data is exported to a "txt" file:
 "./processed_data/avg_mean_std_activity_data.txt"
 

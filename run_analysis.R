@@ -18,8 +18,8 @@
 # mean and standard deviation measurements recorded, labeled by activity
 # Data set name: [avg_mean_std_data]
 # Description: Consists of the merged train and test data for 
-# mean and standard deviation measurements recorded, averaged by activity. Data 
-# is exported to "txt" file
+# mean and standard deviation measurements recorded, averaged by activity and
+# and subject. Data is exported to "txt" file
 
 # //////////////////////////////////////////////////////////////////////////////
 # //////////////////////// SCRIPT //////////////////////////////////////////////
@@ -40,12 +40,12 @@ data_dir <- "./uci_har_data"
 
 # define dataset names
 data_set_type <- c("train","test")
-data_names <- c("X","y")
+data_names <- c("X","y","subject")
 
 # create list for data
 raw_data <- list()
 
-#Import data into list
+#Import train and test data into list
 for (dtype in data_set_type){
         for (dname in data_names){
                 data_name <- paste(dname,dtype,sep="_")
@@ -58,6 +58,7 @@ for (dtype in data_set_type){
 
 #merge raw data
 test_train_data <- cbind(rbind(raw_data$y_train,raw_data$y_test),
+                         rbind(raw_data$subject_train,raw_data$subject_test),
                          rbind(raw_data$X_train,raw_data$X_test))
 nrows_w_nan <- nrow(test_train_data)
 
@@ -83,7 +84,7 @@ filepath <- paste(data_dir,filename,sep="/")
 feature_names <- read.table(filepath)
 
 #define feature list/
-feature_list <- c("activity_code",feature_names[,2])
+feature_list <- c("activity_code","subject",feature_names[,2])
 
 #assign feature names to dataset
 names(test_train_data) <- feature_list
@@ -99,7 +100,8 @@ col_index <- grep("(.*)(mean|std)\\(\\)(.*)",feature_list)
 mean_std_features <- feature_list[col_index]
 
 #extract mean and standard deviation variable columns from merged data
-mean_std_data <- test_train_data[,c("activity_code",mean_std_features)]
+mean_std_data <- test_train_data[,c("activity_code","subject",
+                                    mean_std_features)]
 
 # ==============================================================================
 # Import and Merge Activity Labels
@@ -120,17 +122,16 @@ mean_std_data <- join(mean_std_data,activity_list) %>%
                         select(-activity_code)
 
 #reorder columns 
-mean_std_data <- mean_std_data[,c("activity",mean_std_features)]
+mean_std_data <- mean_std_data[,c("activity","subject",mean_std_features)]
 
 # ==============================================================================
 # Compute the average of mean and standard deviation measurements by activity
+# and subject
 # ==============================================================================
 
-avg_mean_std_data <- aggregate(mean_std_data[,mean_std_features],
-                               list(mean_std_data$activity), mean)
-
-#rename activity column 
-avg_mean_std_data <- avg_mean_std_data %>% select(activity=1,everything())
+avg_mean_std_data <-  mean_std_data %>%
+        group_by(activity, subject) %>% 
+        summarise_each(funs(mean))
 
 # ==============================================================================
 # Export average of mean and standard deviation measurements by activity to file
