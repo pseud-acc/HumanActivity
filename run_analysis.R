@@ -18,7 +18,8 @@
 # mean and standard deviation measurements recorded, labeled by activity
 # Data set name: [avg_mean_std_data]
 # Description: Consists of the merged train and test data for 
-# mean and standard deviation measurements recorded, averaged by activity
+# mean and standard deviation measurements recorded, averaged by activity. Data 
+# is exported to "txt" file
 
 # //////////////////////////////////////////////////////////////////////////////
 # //////////////////////// SCRIPT //////////////////////////////////////////////
@@ -129,3 +130,18 @@ avg_mean_std_data <- aggregate(mean_std_data[,mean_std_features],
                                list(mean_std_data$activity), mean)
 
 avg_mean_std_data
+
+# ==============================================================================
+# Export average of mean and standard deviation measurements by activity to file
+# ==============================================================================
+
+#define destination folder
+destdir <- "./processed_data"
+if(!(file.exists(destdir))){dir.create(destdir)}
+
+#define file name and path
+filename <- "avg_mean_std_activity_data.txt"
+filepath <- paste(destdir,filename, sep="/")
+
+#export data
+write.table(avg_mean_std_data,filepath,row.name=FALSE)
