@@ -146,6 +146,3 @@ filepath <- paste(destdir,filename, sep="/")
 
 #export data
 write.table(avg_mean_std_data,filepath,row.name=FALSE)
-
-data <- read.table(filepath, header = TRUE) #if they used some other way of saving the file than a default write.table, this step will be different
-View(data)
