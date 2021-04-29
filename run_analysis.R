@@ -105,12 +105,12 @@ mean_std_data <- test_train_data[,c("activity_code","subject",
 
 #rename features
 full_name_feature_list <- mean_std_features %>%
-        {gsub("^t","time.",.)} %>%
-        {gsub("^f","frequency.",.)} %>%
-        {gsub("Body","body.",.)} %>%
+        {gsub("^t","time.domain.",.)} %>%
+        {gsub("^f","frequency.domain.",.)} %>%
+        {gsub("Body|BodyBody","body.",.)} %>%
         {gsub("Gravity","gravity.",.)} %>%
-        {gsub("Acc","acceleration.",.)} %>%  
-        {gsub("Gyro","gyro.",.)} %>%  
+        {gsub("Acc","accelerometer.",.)} %>%  
+        {gsub("Gyro","gyroscope.",.)} %>%  
         {gsub("Mag","magnitude.",.)} %>% 
         {gsub("Jerk","jerk.",.)}%>% 
         {gsub("-X",".X.direction",.)}%>% 
