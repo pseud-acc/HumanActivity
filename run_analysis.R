@@ -103,6 +103,25 @@ mean_std_features <- feature_list[col_index]
 mean_std_data <- test_train_data[,c("activity_code","subject",
                                     mean_std_features)]
 
+#rename features
+full_name_feature_list <- mean_std_features %>%
+        {gsub("^t","time.",.)} %>%
+        {gsub("^f","frequency.",.)} %>%
+        {gsub("Body","body.",.)} %>%
+        {gsub("Gravity","gravity.",.)} %>%
+        {gsub("Acc","acceleration.",.)} %>%  
+        {gsub("Gyro","gyro.",.)} %>%  
+        {gsub("Mag","magnitude.",.)} %>% 
+        {gsub("Jerk","jerk.",.)}%>% 
+        {gsub("-X",".X.direction",.)}%>% 
+        {gsub("-Y",".Y.direction",.)}%>% 
+        {gsub("-Z",".Z.direction",.)}%>% 
+        {gsub("\\(\\)","",.)}%>% 
+        {gsub("-","",.)}
+
+#assign new feature names to data set
+names(mean_std_data) <- c("activity_code","subject",full_name_feature_list) 
+
 # ==============================================================================
 # Import and Merge Activity Labels
 # ==============================================================================
@@ -122,7 +141,7 @@ mean_std_data <- join(mean_std_data,activity_list) %>%
                         select(-activity_code)
 
 #reorder columns 
-mean_std_data <- mean_std_data[,c("activity","subject",mean_std_features)]
+mean_std_data <- mean_std_data[,c("activity","subject",full_name_feature_list)]
 
 # ==============================================================================
 # Compute the average of mean and standard deviation measurements by activity
