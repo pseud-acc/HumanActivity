@@ -129,7 +129,8 @@ mean_std_data <- mean_std_data[,c("activity",mean_std_features)]
 avg_mean_std_data <- aggregate(mean_std_data[,mean_std_features],
                                list(mean_std_data$activity), mean)
 
-avg_mean_std_data
+#rename activity column 
+avg_mean_std_data <- avg_mean_std_data %>% select(activity=1,everything())
 
 # ==============================================================================
 # Export average of mean and standard deviation measurements by activity to file
@@ -145,3 +146,6 @@ filepath <- paste(destdir,filename, sep="/")
 
 #export data
 write.table(avg_mean_std_data,filepath,row.name=FALSE)
+
+data <- read.table(filepath, header = TRUE) #if they used some other way of saving the file than a default write.table, this step will be different
+View(data)

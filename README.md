@@ -13,6 +13,10 @@ and gyroscope recorded the 3-axial linear acceleration and 3-axial angular
 velocity at a constant rate of 50Hz. This data was split into 70% and 30%
 test and train data respectively.
 
+## **Working Directory**
+This directory contains the raw data files:
+"./uci_har_data/"
+
 ## **Code Book**
 For more information on variables see "./uci_har_data/features_info.txt". 
 
